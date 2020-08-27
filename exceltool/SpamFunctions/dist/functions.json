@@ -1,0 +1,32 @@
+{
+    "functions": [
+        {
+            "description": "Adds the text to the queue.",
+            "id": "SENDTOQUEUE",
+            "name": "SENDTOQUEUE",
+            "parameters": [
+                {
+                    "description": "text to be added",
+                    "name": "text",
+                    "type": "string"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "description": "Calculates with Azure Functions.",
+            "id": "CALC",
+            "name": "CALC",
+            "parameters": [
+                {
+                    "description": "number for calculation",
+                    "name": "first",
+                    "type": "number"
+                }
+            ],
+            "result": {
+                "type": "number"
+            }
+        }
+    ]
+}

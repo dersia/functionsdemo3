@@ -1,0 +1,9 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=siaafunctionsdebug;AccountKey=HKj8JoCsJ/TJAUyyFj5hCk7yIBQzfucesRZiOR17vEt83HAVSjk31kJ17daTIKH+nAfYnQWsVsis9C7eFml6OQ==;EndpointSuffix=core.windows.net",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "BlobQueueConnection": "DefaultEndpointsProtocol=https;AccountName=siaafunctionsdebug;AccountKey=HKj8JoCsJ/TJAUyyFj5hCk7yIBQzfucesRZiOR17vEt83HAVSjk31kJ17daTIKH+nAfYnQWsVsis9C7eFml6OQ==;EndpointSuffix=core.windows.net",
+        "AzureWebJobsBlobQueueConnection": "DefaultEndpointsProtocol=https;AccountName=siaafunctionsdebug;AccountKey=HKj8JoCsJ/TJAUyyFj5hCk7yIBQzfucesRZiOR17vEt83HAVSjk31kJ17daTIKH+nAfYnQWsVsis9C7eFml6OQ==;EndpointSuffix=core.windows.net"
+    }
+}

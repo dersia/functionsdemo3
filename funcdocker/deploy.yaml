@@ -1,0 +1,108 @@
+data:
+  AzureWebJobsStorage: ""
+  FUNCTIONS_WORKER_RUNTIME: ""
+  BlobQueueConnection: ""
+  AzureWebJobsBlobQueueConnection: "" 
+apiVersion: v1
+kind: Secret
+metadata:
+  name: funcdocker
+  namespace: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: funcdocker-http
+  namespace: default
+  annotations:
+    osiris.deislabs.io/enabled: "true"
+    osiris.deislabs.io/deployment: funcdocker-http
+spec:
+  selector:
+    app: funcdocker-http
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: funcdocker-http
+  namespace: default
+  labels:
+    app: funcdocker-http
+  annotations:
+    osiris.deislabs.io/enabled: "true"
+    osiris.deislabs.io/minReplicas: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: funcdocker-http
+  template:
+    metadata:
+      labels:
+        app: funcdocker-http
+    spec:
+      containers:
+      - name: funcdocker-http
+        image: functionsdemo.azurecr.io/demos/funcdocker
+        ports:
+        - containerPort: 80
+        env:
+        - name: AzureFunctionsJobHost__functions__0
+          value: DockerFunc
+        envFrom:
+        - secretRef:
+            name: funcdocker
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: funcdocker
+  namespace: default
+  labels:
+    app: funcdocker
+spec:
+  selector:
+    matchLabels:
+      app: funcdocker
+  template:
+    metadata:
+      labels:
+        app: funcdocker
+    spec:
+      containers:
+      - name: funcdocker
+        image: functionsdemo.azurecr.io/demos/funcdocker
+        env:
+        - name: AzureFunctionsJobHost__functions__0
+          value: FuncKeda
+        envFrom:
+        - secretRef:
+            name: funcdocker
+      imagePullSecrets:
+      - name: regcred
+---
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: funcdocker
+  namespace: default
+  labels:
+    deploymentName: funcdocker
+spec:
+  scaleTargetRef:
+    deploymentName: funcdocker
+  triggers:
+  - type: azure-queue
+    metadata:
+      type: queueTrigger
+      connection: BlobQueueConnection
+      queueName: myqueue-items
+      name: myQueueItem
+---
+
